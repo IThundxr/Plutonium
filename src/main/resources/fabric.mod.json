@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "plutonium",
+  "version": "${version}",
+  "name": "Plutonium",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.Plutoniumom/"
+  },
+  "license": "MIT",
+  "icon": "assets/plutonium/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "dev.ithundxr.plutonium.PlutoniumClient"
+    ],
+    "main": [
+      "dev.ithundxr.plutonium.Plutonium"
+    ]
+  },
+  "mixins": [
+    "plutonium.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
