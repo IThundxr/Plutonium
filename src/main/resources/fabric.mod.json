@@ -4,9 +4,10 @@
   "version": "${version}",
   "name": "Plutonium",
   "description": "",
-  "authors": [],
+  "authors": ["ithundxr"],
   "contact": {
-    "repo": "https://github.Plutoniumom/"
+    "homepage": "https://ithundxr.dev",
+    "repo": "https://github.com/IThundxr/Plutonium"
   },
   "license": "MIT",
   "icon": "assets/plutonium/icon.png",
