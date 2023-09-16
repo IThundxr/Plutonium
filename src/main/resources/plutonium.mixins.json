@@ -2,12 +2,20 @@
   "required": true,
   "minVersion": "0.8",
   "package": "dev.ithundxr.plutonium.mixin",
+  "plugin": "dev.ithundxr.plutonium.mixin.PlutoniumMixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "AccessorConnection",
-    "AccessorServerLoginPacketListenerImpl"
-  ],
-  "client": [
+    "fsc.AccessorConnection",
+    "fsc.AccessorServerLoginPacketListenerImpl",
+    "fsc.MixinServerConnectionListener",
+    "fsc.MixinConnection",
+    "fsc.MixinVarint21FrameDecoder",
+    "fsc.MixinVarint21LengthFieldPrepender",
+    "zstd.MixinDimensionDataStorage",
+    "zstd.MixinLevelStorageSourceLevelStorageAccess",
+    "zstd.MixinRegionFile",
+    "zstd.MixinRegionFileVersion",
+    "zstd.MixinSavedData"
   ],
   "injectors": {
     "defaultRequire": 1
