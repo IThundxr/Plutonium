@@ -19,15 +19,15 @@ import java.util.concurrent.atomic.LongAdder;
 
 public class ZstdEncoder extends MessageToByteEncoder<ByteBuf> {
 
-    private static final ScheduledExecutorService sched = Executors.newSingleThreadScheduledExecutor();
+    private static final ScheduledExecutorService schedule = Executors.newSingleThreadScheduledExecutor();
 
     private static final LongAdder inBytes = new LongAdder();
     private static final LongAdder outBytes = new LongAdder();
 
     static {
-        sched.scheduleAtFixedRate(() -> {
-            Plutonium.LOGGER.info("Zstd ratio past 5m: " + ((double) inBytes.sumThenReset() / outBytes.sumThenReset()));
+        schedule.scheduleAtFixedRate(() -> {
             ZstdStats.setRatio((double) inBytes.sumThenReset() / outBytes.sumThenReset());
+            Plutonium.LOGGER.info("Zstd ratio past 5m: " + ZstdStats.getRatio());
         }, 5, 5, TimeUnit.MINUTES);
     }
 
@@ -62,7 +62,7 @@ public class ZstdEncoder extends MessageToByteEncoder<ByteBuf> {
             stream.flush();
         } else {
             Channel ch = ctx.channel();
-            future = sched.schedule(() -> {
+            future = schedule.schedule(() -> {
                 future = null;
                 ch.writeAndFlush(Unpooled.EMPTY_BUFFER);
             }, unclogFrequency, TimeUnit.NANOSECONDS);

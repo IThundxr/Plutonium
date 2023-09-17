@@ -5,10 +5,11 @@
   "plugin": "dev.ithundxr.plutonium.mixin.PlutoniumMixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "fsc.AccessorClientHandshakePacketListenerImpl",
     "fsc.AccessorConnection",
     "fsc.AccessorServerLoginPacketListenerImpl",
-    "fsc.MixinServerConnectionListener",
     "fsc.MixinConnection",
+    "fsc.MixinServerConnectionListener",
     "fsc.MixinVarint21FrameDecoder",
     "fsc.MixinVarint21LengthFieldPrepender",
     "zstd.MixinDimensionDataStorage",

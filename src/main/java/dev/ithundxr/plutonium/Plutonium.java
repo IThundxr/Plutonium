@@ -2,6 +2,7 @@ package dev.ithundxr.plutonium;
 
 import com.github.luben.zstd.util.Native;
 import dev.ithundxr.plutonium.mixin.fsc.AccessorConnection;
+import dev.ithundxr.plutonium.mixin.fsc.AccessorClientHandshakePacketListenerImpl;
 import dev.ithundxr.plutonium.mixin.fsc.AccessorServerLoginPacketListenerImpl;
 import dev.ithundxr.plutonium.mixinsupport.FSCConnection;
 import net.fabricmc.api.ModInitializer;
@@ -9,6 +10,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginNetworking;
+import net.fabricmc.fabric.mixin.networking.accessor.ServerLoginNetworkHandlerAccessor;
 import net.minecraft.network.Connection;
 import net.minecraft.network.PacketSendListener;
 import net.minecraft.network.protocol.Packet;
@@ -49,7 +51,7 @@ public class Plutonium implements ModInitializer {
                         LOGGER.error("Exception in packet thread", t);
                     }
                 }
-            }, "Fireblanket async packet send thread #"+(i+1));
+            }, "Fireblanket async packet send thread #" + (i+1));
             thread.setDaemon(true);
             thread.start();
         }
@@ -74,7 +76,7 @@ public class Plutonium implements ModInitializer {
 
         ServerLoginNetworking.registerGlobalReceiver(FULL_STREAM_COMPRESSION, (server, handler, understood, buf, synchronizer, responseSender) -> {
             if (understood) {
-                ((FSCConnection)((AccessorServerLoginPacketListenerImpl)handler).plutonium$getConnection()).plutonium$enableFullStreamCompression();
+                ((FSCConnection) ((AccessorServerLoginPacketListenerImpl) handler).plutonium$getConnection()).plutonium$enableFullStreamCompression();
             }
         });
     }
