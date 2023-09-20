@@ -8,7 +8,7 @@
     "homepage": "https://ithundxr.dev",
     "repo": "https://github.com/IThundxr/Plutonium"
   },
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "icon": "assets/plutonium/icon.png",
   "environment": "*",
   "entrypoints": {
