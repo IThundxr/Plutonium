@@ -9,7 +9,7 @@ public class PlutoniumCommandClient {
     public static void register(CommandDispatcher<FabricClientCommandSource> dispatcher) {
         dispatcher.register(ClientCommandManager.literal("plutonium")
             .then(
-                ClientCommandManager.literal("client").then(ZstdRatioCommand.register())
+                ClientCommandManager.literal("client").then(ZstdRatioCommand.registerClient())
             )
         );
     }

@@ -5,7 +5,11 @@ import dev.ithundxr.plutonium.mixin.fsc.AccessorConnection;
 import dev.ithundxr.plutonium.mixin.fsc.AccessorClientHandshakePacketListenerImpl;
 import dev.ithundxr.plutonium.mixin.fsc.AccessorServerLoginPacketListenerImpl;
 import dev.ithundxr.plutonium.mixinsupport.FSCConnection;
+import dev.ithundxr.plutonium.registry.PlutoniumCommand;
+import dev.ithundxr.plutonium.registry.PlutoniumCommandClient;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerLoginConnectionEvents;
@@ -39,6 +43,8 @@ public class Plutonium implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        CommandRegistrationCallback.EVENT.register((dispatcher, access, server) -> PlutoniumCommand.register(dispatcher));
+
         for (int i = 0; i < PACKET_QUEUES.length; i++) {
             LinkedBlockingQueue<QueuedPacket> q = new LinkedBlockingQueue<>();
             PACKET_QUEUES[i] = q;

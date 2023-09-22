@@ -25,10 +25,9 @@ public class ZstdEncoder extends MessageToByteEncoder<ByteBuf> {
     private static final LongAdder outBytes = new LongAdder();
 
     static {
-        schedule.scheduleAtFixedRate(() -> {
-            ZstdStats.setRatio((double) inBytes.sumThenReset() / outBytes.sumThenReset());
-            Plutonium.LOGGER.info("Zstd ratio past 5m: " + ZstdStats.getRatio());
-        }, 5, 5, TimeUnit.MINUTES);
+        schedule.scheduleAtFixedRate(
+                () -> ZstdStats.setRatio((double) inBytes.sumThenReset() / outBytes.sumThenReset()), 5, 5, TimeUnit.MINUTES
+        );
     }
 
     private final long flushFrequency, unclogFrequency;
