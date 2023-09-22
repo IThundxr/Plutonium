@@ -3,14 +3,12 @@ on: [workflow_dispatch]
 
 jobs:
   build:
+   name: Build Release
+   uses: ./.github/workflows/build.yml
+
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-    
-      - name: Build Release
-        uses: ./.github/workflows/build.yml
-
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
