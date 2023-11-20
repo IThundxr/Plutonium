@@ -20,7 +20,7 @@ public class PlutoniumMixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         // Conflicts with Krypton, which also lifts the limit
-        return !mixinClassName.contains("Varint21FrameDecoder") || !FabricLoader.getInstance().isModLoaded("krypton");
+        return !(mixinClassName.contains("Varint21FrameDecoder") && FabricLoader.getInstance().isModLoaded("krypton"));
     }
 
     @Override
