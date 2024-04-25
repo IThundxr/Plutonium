@@ -17,6 +17,9 @@
     ],
     "main": [
       "dev.ithundxr.plutonium.Plutonium"
+    ],
+    "mm:early_risers": [
+      "dev.ithundxr.plutonium.EarlyRiser"
     ]
   },
   "mixins": [
