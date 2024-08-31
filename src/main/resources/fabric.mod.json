@@ -12,12 +12,6 @@
   "icon": "assets/plutonium/icon.png",
   "environment": "*",
   "entrypoints": {
-    "client": [
-      "dev.ithundxr.plutonium.PlutoniumClient"
-    ],
-    "main": [
-      "dev.ithundxr.plutonium.Plutonium"
-    ],
     "mm:early_risers": [
       "dev.ithundxr.plutonium.EarlyRiser"
     ]
