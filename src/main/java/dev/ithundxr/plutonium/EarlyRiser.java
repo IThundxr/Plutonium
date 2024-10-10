@@ -1,8 +1,8 @@
 package dev.ithundxr.plutonium;
 
 import com.chocohead.mm.api.ClassTinkerers;
-import com.github.luben.zstd.ZstdInputStream;
-import com.github.luben.zstd.ZstdOutputStream;
+import com.github.luben.zstd.ZstdInputStreamNoFinalizer;
+import com.github.luben.zstd.ZstdOutputStreamNoFinalizer;
 import de.bluecolored.shadow.querz.nbt.mca.ExceptionFunction;
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -20,8 +20,9 @@ public class EarlyRiser implements Runnable {
                     Supplier<Supplier<Object[]>> supplier = (() -> () ->
                             new Object[] {
                                     53,
-                                    (ExceptionFunction<OutputStream, ? extends OutputStream, IOException>) ZstdOutputStream::new,
-                                    (ExceptionFunction<InputStream, ? extends InputStream, IOException>) ZstdInputStream::new
+                                    // Haven't done manual review, but Bluemap would be insane *not* to close these streams
+                                    (ExceptionFunction<OutputStream, ? extends OutputStream, IOException>) ZstdOutputStreamNoFinalizer::new,
+                                    (ExceptionFunction<InputStream, ? extends InputStream, IOException>) ZstdInputStreamNoFinalizer::new
                             }
                     );
                     return supplier.get().get();

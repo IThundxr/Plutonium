@@ -1,6 +1,6 @@
 package dev.ithundxr.plutonium.mixin.zstd;
 
-import com.github.luben.zstd.ZstdOutputStream;
+import com.github.luben.zstd.ZstdOutputStreamNoFinalizer;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.level.saveddata.SavedData;
@@ -21,7 +21,8 @@ public class MixinSavedData {
         String path = vanilla.getPath();
         if (path.endsWith(".dat")) {
             File zstd = new File(path.substring(0, path.length() - 4) + ".zat");
-            try (ZstdOutputStream z = new ZstdOutputStream(new FileOutputStream(zstd))) {
+            // We don't need a finalizer, we're putting it in a try-with-resources clause anyway
+            try (ZstdOutputStreamNoFinalizer z = new ZstdOutputStreamNoFinalizer(new FileOutputStream(zstd))) {
                 z.setChecksum(true);
                 z.setLevel(4);
                 NbtIo.write(compoundTag, new DataOutputStream(z));
