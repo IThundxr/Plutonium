@@ -22,9 +22,8 @@ dependencies {
     minecraft("com.mojang:minecraft:${minecraft_version}")
 
     mappings(loom.layered {
-        it.mappings("org.quiltmc:quilt-mappings:${minecraft_version}+build.${qm_version}:intermediary-v2")
-        it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
         it.officialMojangMappings { nameSyntheticMembers = false }
+        it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
     })
 
     modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
@@ -39,11 +38,11 @@ dependencies {
 
     modImplementation("io.netty.incubator:netty-incubator-transport-classes-io_uring:0.0.15.Final")
     modImplementation("io.netty.incubator:netty-incubator-transport-native-io_uring:0.0.15.Final:linux-x86_64")
-    modImplementation("com.github.luben:zstd-jni:1.5.5-5")
+    modImplementation("com.github.luben:zstd-jni:${zstd_version}")
 
     include("io.netty.incubator:netty-incubator-transport-classes-io_uring:0.0.15.Final") { transitive = false }
     include("io.netty.incubator:netty-incubator-transport-native-io_uring:0.0.15.Final:linux-x86_64") { transitive = false }
-    include("com.github.luben:zstd-jni:1.5.5-5") { transitive = false }
+    include("com.github.luben:zstd-jni:${zstd_version}") { transitive = false }
 }
 
 processResources {

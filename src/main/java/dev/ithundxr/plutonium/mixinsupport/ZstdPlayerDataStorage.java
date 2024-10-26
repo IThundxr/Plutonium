@@ -1,13 +1,12 @@
 package dev.ithundxr.plutonium.mixinsupport;
 
-import com.github.luben.zstd.ZstdInputStream;
-import com.github.luben.zstd.ZstdOutputStream;
+import com.github.luben.zstd.ZstdInputStreamNoFinalizer;
+import com.github.luben.zstd.ZstdOutputStreamNoFinalizer;
 import com.mojang.datafixers.DataFixer;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import net.minecraft.Util;
-import net.minecraft.client.User;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.NbtUtils;
@@ -38,7 +37,8 @@ public class ZstdPlayerDataStorage extends PlayerDataStorage {
             InputStream in;
             File zstd = new File(playerDataDir, player.getStringUUID() + ".zat");
             if (zstd.isFile()) {
-                in = new FastBufferedInputStream(new ZstdInputStream(new FileInputStream(zstd)));
+                // We close this manually in the try-with-resources below, so no need for finalizer
+                in = new FastBufferedInputStream(new ZstdInputStreamNoFinalizer(new FileInputStream(zstd)));
             } else {
                 File vanilla = new File(playerDataDir, player.getStringUUID() + ".dat");
                 if (vanilla.isFile()) {
@@ -64,7 +64,8 @@ public class ZstdPlayerDataStorage extends PlayerDataStorage {
         try {
             CompoundTag compoundTag = player.saveWithoutId(new CompoundTag());
             File tmp = File.createTempFile(player.getStringUUID() + "-", ".zat", playerDataDir);
-            try (ZstdOutputStream z = new ZstdOutputStream(new FileOutputStream(tmp))) {
+            // We don't need a finalizer because we are using a try-with-resources block
+            try (ZstdOutputStreamNoFinalizer z = new ZstdOutputStreamNoFinalizer(new FileOutputStream(tmp))) {
                 z.setChecksum(true);
                 z.setLevel(6);
                 NbtIo.write(compoundTag, new DataOutputStream(z));

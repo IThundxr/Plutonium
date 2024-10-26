@@ -1,6 +1,6 @@
 package dev.ithundxr.plutonium.mixin.zstd;
 
-import com.github.luben.zstd.ZstdOutputStream;
+import com.github.luben.zstd.ZstdOutputStreamNoFinalizer;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +21,8 @@ public class MixinSavedData {
         String path = file.getPath();
         if (path.endsWith(".dat")) {
             File zstd = new File(path.substring(0, path.length() - 4) + ".zat");
-            try (ZstdOutputStream z = new ZstdOutputStream(new FileOutputStream(zstd))) {
+            // We don't need a finalizer, we're putting it in a try-with-resources clause anyway
+            try (ZstdOutputStreamNoFinalizer z = new ZstdOutputStreamNoFinalizer(new FileOutputStream(zstd))) {
                 z.setChecksum(true);
                 z.setLevel(4);
                 NbtIo.write(compoundTag, new DataOutputStream(z));

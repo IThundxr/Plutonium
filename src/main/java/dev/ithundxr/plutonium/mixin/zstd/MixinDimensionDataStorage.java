@@ -1,6 +1,6 @@
 package dev.ithundxr.plutonium.mixin.zstd;
 
-import com.github.luben.zstd.ZstdInputStream;
+import com.github.luben.zstd.ZstdInputStreamNoFinalizer;
 import com.mojang.datafixers.DataFixer;
 import it.unimi.dsi.fastutil.io.FastBufferedInputStream;
 import net.minecraft.SharedConstants;
@@ -58,7 +58,8 @@ public class MixinDimensionDataStorage {
         InputStream in;
         File zstd = getZstdFile(id);
         if (zstd.exists()) {
-            in = new FastBufferedInputStream(new ZstdInputStream(new FileInputStream(zstd)));
+            // We close this manually in the try-with-resources below, so no need for finalizer
+            in = new FastBufferedInputStream(new ZstdInputStreamNoFinalizer(new FileInputStream(zstd)));
         } else {
             File vanilla = getDataFile(id);
             if (vanilla.exists()) {
