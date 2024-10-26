@@ -12,8 +12,8 @@
   "icon": "assets/plutonium/icon.png",
   "environment": "*",
   "entrypoints": {
-    "mm:early_risers": [
-      "dev.ithundxr.plutonium.EarlyRiser"
+    "server": [
+      "dev.ithundxr.plutonium.PlutoniumDedicatedServerModInitializer"
     ]
   },
   "mixins": [
