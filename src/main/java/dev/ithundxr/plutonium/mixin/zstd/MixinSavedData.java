@@ -1,12 +1,13 @@
 package dev.ithundxr.plutonium.mixin.zstd;
 
 import com.github.luben.zstd.ZstdOutputStream;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.world.level.saveddata.SavedData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -15,10 +16,9 @@ import java.io.IOException;
 
 @Mixin(SavedData.class)
 public class MixinSavedData {
-    @Redirect(at=@At(value="INVOKE", target="Lnet/minecraft/nbt/NbtIo;writeCompressed(Lnet/minecraft/nbt/CompoundTag;Ljava/io/File;)V"),
-            method= "save(Ljava/io/File;)V")
-    public void plutonium$writeZstd(CompoundTag compoundTag, File vanilla) throws IOException {
-        String path = vanilla.getPath();
+    @WrapOperation(method = "save(Ljava/io/File;)V", at = @At(value="INVOKE", target="Lnet/minecraft/nbt/NbtIo;writeCompressed(Lnet/minecraft/nbt/CompoundTag;Ljava/io/File;)V"))
+    public void plutonium$writeZstd(CompoundTag compoundTag, File file, Operation<Void> original) throws IOException {
+        String path = file.getPath();
         if (path.endsWith(".dat")) {
             File zstd = new File(path.substring(0, path.length() - 4) + ".zat");
             try (ZstdOutputStream z = new ZstdOutputStream(new FileOutputStream(zstd))) {
@@ -26,10 +26,10 @@ public class MixinSavedData {
                 z.setLevel(4);
                 NbtIo.write(compoundTag, new DataOutputStream(z));
             }
-            vanilla.delete();
+            file.delete();
         } else {
             // oookay, I don't know what you want. have fun.
-            NbtIo.writeCompressed(compoundTag, vanilla);
+            original.call(compoundTag, file);
         }
     }
 }
