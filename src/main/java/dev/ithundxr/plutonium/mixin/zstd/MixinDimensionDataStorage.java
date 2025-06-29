@@ -28,7 +28,7 @@ public class MixinDimensionDataStorage {
     @Shadow private File getDataFile(String id) { throw new AbstractMethodError(); }
 
     @Unique private File getZstdFile(String id) {
-        return new File(dataFolder, id+".zat");
+        return new File(dataFolder, id + ".zat");
     }
 
     /**
